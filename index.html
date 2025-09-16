@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Auralux — Mood-based music</title>
+    <meta name="description" content="Simple mood and genre based music recommendations">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="top-nav">
+      <div class="container nav-row">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true"></div>
+          <span class="brand-name">Auralux</span>
+        </div>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="#app">App</a>
+          <a href="#faq">Support</a>
+        </nav>
+        <div class="nav-cta">
+          
+        </div>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <h1 class="hero-title">Music you love, tailored to your mood.</h1>
+          <p class="hero-subtitle">Discover songs by mood and genre. Try recommendations instantly — no signup required.</p>
+          <div class="hero-actions">
+            <a href="#app" class="btn btn-primary btn-large">Try it now</a>
+          </div>
+          <p class="tiny muted">Open-source demo. No signup or tracking.</p>
+        </div>
+        <div class="hero-art" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <main>
+
+      <section id="app" class="app-section">
+        <div class="container">
+          <h2 class="section-title">Try recommendations now</h2>
+          <div class="app-grid">
+            <section class="card">
+              <div class="ai-row">
+                <input id="aiPrompt" type="text" class="ai-input" placeholder="Ask for music: 'Chill indie for focus, 12 songs'" autocomplete="off">
+                <button id="aiGo" class="btn btn-primary">Go</button>
+              </div>
+              <div class="chip-row" role="listbox" aria-label="Quick suggestions">
+                <button class="chip" data-chip="mood:chill">Chill</button>
+                <button class="chip" data-chip="mood:energetic">Energetic</button>
+                <button class="chip" data-chip="mood:focus">Focus</button>
+                <button class="chip" data-chip="genre:indie">Indie</button>
+                <button class="chip" data-chip="genre:lofi">Lo‑Fi</button>
+                <button class="chip" data-chip="genre:hip-hop">Hip‑Hop</button>
+                <button class="chip" data-chip="limit:15">15 songs</button>
+              </div>
+              <form id="controls" class="controls" autocomplete="off">
+                <div class="control-group">
+                  <label for="mood">Mood</label>
+                  <select id="mood" name="mood">
+                    <option value="">Any</option>
+                    <option value="happy">Happy</option>
+                    <option value="chill">Chill</option>
+                    <option value="energetic">Energetic</option>
+                    <option value="sad">Sad</option>
+                    <option value="romantic">Romantic</option>
+                    <option value="focus">Focus</option>
+                  </select>
+                </div>
+                <div class="control-group">
+                  <label for="genre">Genre</label>
+                  <select id="genre" name="genre">
+                    <option value="">Any</option>
+                    <option value="pop">Pop</option>
+                    <option value="rock">Rock</option>
+                    <option value="hip-hop">Hip-Hop</option>
+                    <option value="electronic">Electronic</option>
+                    <option value="rnb">R&B</option>
+                    <option value="indie">Indie</option>
+                    <option value="jazz">Jazz</option>
+                    <option value="lofi">Lo-Fi</option>
+                    <option value="classical">Classical</option>
+                  </select>
+                </div>
+                <div class="control-group">
+                  <label for="query">Search (title or artist)</label>
+                  <input id="query" name="query" type="text" placeholder="e.g., Weekend, Dua Lipa">
+                </div>
+                <div class="control-group">
+                  <label for="limit">How many results?</label>
+                  <input id="limit" name="limit" type="number" min="1" max="50" value="10">
+                </div>
+                <div class="actions">
+                  <button type="submit" class="btn btn-primary">Recommend</button>
+                  <button type="button" id="shuffle" class="btn">Shuffle</button>
+                </div>
+              </form>
+            </section>
+
+            <section class="results card full-width">
+              <div class="results-header">
+                <h2>Recommendations</h2>
+                <span id="resultCount" class="muted"></span>
+              </div>
+              <ol id="resultsList" class="list"></ol>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <!-- Player -->
+      <section id="player" class="player-section">
+        <div class="container">
+          <h2 class="section-title">Player</h2>
+          <div class="player-grid card">
+            <div class="playlist">
+              <ol id="playlist" class="list"></ol>
+            </div>
+            <div class="controls">
+              <div class="now-row">
+                <div>
+                  <div id="nowTitle" class="song-title">—</div>
+                  <div id="nowArtist" class="song-meta">—</div>
+                </div>
+                <div class="song-actions"></div>
+              </div>
+              <div class="progress-row">
+                <span id="curTime" class="muted">0:00</span>
+                <input id="seek" type="range" min="0" max="100" value="0" step="1">
+                <span id="durTime" class="muted">0:00</span>
+              </div>
+              <div class="control-row">
+                <button id="prev" class="btn">⏮</button>
+                <button id="play" class="btn btn-primary">▶</button>
+                <button id="next" class="btn">⏭</button>
+                <div class="volume">
+                  <span class="muted">🔊</span>
+                  <input id="volume" type="range" min="0" max="1" step="0.01" value="1">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="faq" class="faq">
+        <div class="container">
+          <h2 class="section-title">Questions?</h2>
+          <div class="faq-list">
+            <details>
+              <summary>Can I cancel anytime?</summary>
+              <p>Yes. You can cancel Premium anytime in your account settings.</p>
+            </details>
+            <details>
+              <summary>Do you track me?</summary>
+              <p>This demo is static. There is no tracking or server involved.</p>
+            </details>
+            <details>
+              <summary>Is this affiliated with Spotify?</summary>
+              <p>No. This is a personal demo that links to public Spotify tracks.</p>
+            </details>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-row">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true"></div>
+          <span class="brand-name">Auralux</span>
+        </div>
+        <p class="muted">Built as a lightweight static demo. No tracking, no servers.</p>
+      </div>
+    </footer>
+
+    
+
+
+    <script src="app.js"></script>
+  </body>
+  </html>
+
+
+
+
+
